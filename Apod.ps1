@@ -149,15 +149,19 @@ $apodBatFile = @'
 py apod.py
 '@
 
-$apodPythonFile | Out-File "apod.py" -Encoding utf8
-$apodBatFile | Out-File "apod.bat"
+$pythonFilePath = Join-Path -Path $userDocuments\Apod -ChildPath "apod.py"
+$batFilePath = Join-Path -Path $userDocuments\Apod -ChildPath "apod.bat"
 
-$username = $Env:UserName
+New-Item -Path $pythonFilePath -Type File -Value $apodPythonFile -Force
+New-Item -Path $batFilePath -Type File -Value $apodBatFile -Force
+
+$userName = $Env:UserName
+$pcName = $env:COMPUTERNAME
 
 $taskTrigger = New-ScheduledTaskTrigger -AtLogOn
-$taskAction = New-ScheduledTaskAction -Execute "C:\Users\$username\Documents\Apod\apod.bat"
-$taskPrincipal = New-ScheduledTaskPrincipal -UserId "$username" -LogonType Interactive -RunLevel Highest
-#Register-ScheduledTask "Apod" -Action $taskAction -Trigger $taskTrigger -Principal $taskPrincipal
+$taskAction = New-ScheduledTaskAction -Execute "cmd.exe" -Argument "/c C:\Users\$username\Documents\Apod\apod.bat"
+$taskPrincipal = New-ScheduledTaskPrincipal -UserId "$pcName\$userName" -LogonType Interactive -RunLevel Highest
+Register-ScheduledTask "Apod" -Action $taskAction -Trigger $taskTrigger -Principal $taskPrincipal
 
 $promptToInputApiKey = "You will now need to input your Nasa API key into your system variables`n`n"
 $promptToInputApiKey += "Open the Run dialog by holding the Windows Key and press R, then search for SystemPropertiesAdvanced`n`n"
