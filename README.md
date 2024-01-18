@@ -4,4 +4,4 @@ Hold CTRL R to open the Run window and search for <strong>SystemPropertiesAdvanc
 Select Environment Variables > New<br>
 Name your variable <strong>Apod</strong> and input your API key in the value<br>
 Create a scheduled task to run this script on logon<br>
-Alternatively, run the Apod.ps1 script to set everything up
+Alternatively, run the Apod.ps1 script to set everything up except the API key
