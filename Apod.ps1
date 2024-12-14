@@ -58,12 +58,12 @@ if ($savedImagesToday.Count -eq 0) {
         $backgroundimage = Join-Path -Path $apodSaveFolder -ChildPath ($imageName + " - " + $currentDate + ".jpg")
 
         try {
-			Invoke-WebRequest $hdImage -OutFile $backgroundimage
-		} catch {
-			Write-Output "HD image download failed, likely the URL provided doesnt work."
-            Write-Output "Attempting to download the SD image instead."
-			Invoke-WebRequest $sdImage -OutFile $backgroundimage
-		}
+		Invoke-WebRequest $hdImage -OutFile $backgroundimage
+	} catch {
+		Write-Output "HD image download failed, likely the URL provided doesnt work."
+  		Write-Output "Attempting to download the SD image instead."
+		Invoke-WebRequest $sdImage -OutFile $backgroundimage
+	}
         [Wallpaper]::SystemParametersInfo($SPI_SETDESKWALLPAPER, 0, $backgroundimage, $SPIF_UPDATEINIFILE -bor $SPIF_SENDCHANGE)
 
     }
